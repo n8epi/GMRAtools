@@ -35,9 +35,10 @@ def local_pca_info(local):
         d = len(local[0]['info'])
         im = np.zeros((k, d))
 
-        # Set color limits to avoid outliers
-        a = np.percentile(im, 0.01)
-        b = np.percentile(im, 0.99)
+        # Set color limits
+        a = np.min(im)
+        b = np.max(im)
+
         plt.figure(0)
         plt.imshow(im, interpolation='nearest', clim=(a, b))
         plt.colorbar()
