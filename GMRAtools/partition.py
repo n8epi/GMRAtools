@@ -1,6 +1,19 @@
+"""
+Partition
+
+This contains partition functions to feed to the GMRA
+
+    uniform_covertree_partition: computes a partition induced by cutting off a covertree at a particular scale
+
+author: Nate Strawn
+email: nate.strawn@georgetown.edu
+website: http://natestrawn.com
+license: see LICENSE.txt
+Please feel free to use and modify this, but keep the above information. Thanks!
+"""
+
 import numpy as np
 from covertree import CoverTree
-
 
 def uniform_covertree_partition(data, metric, scale=-1):
     '''
