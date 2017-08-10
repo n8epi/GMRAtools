@@ -83,13 +83,13 @@ if __name__ == '__main__':
     from local import pca_coder
     from local_info import local_pca_info
 
-    N = 1000
+    N = 10000
     th = 2*np.pi*rd.rand(N)
     x = np.zeros((N, 2))
     x[:, 0] = np.cos(th)
     x[:, 1] = np.sin(th)
 
-    scale = -1
+    scale = -3
 
     g = GMRA(x,
              lambda d, m: uniform_covertree_partition(d, m, scale=scale),

@@ -35,6 +35,9 @@ def local_pca_info(local):
         d = len(local[0]['info'])
         im = np.zeros((k, d))
 
+        for i in range(k):
+            im[i, :] = local[i]['info']
+
         # Set color limits
         a = np.min(im)
         b = np.max(im)
