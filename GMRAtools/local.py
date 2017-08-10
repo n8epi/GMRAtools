@@ -13,7 +13,8 @@ Please feel free to use and modify this, but keep the above information. Thanks!
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
+
+#TODO: Add new local models for subspace clustering
 
 def pca_coder(data, rank=2):
     m = np.mean(data, axis=0)

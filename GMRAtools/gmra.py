@@ -16,6 +16,7 @@ Please feel free to use and modify this, but keep the above information. Thanks!
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 def l2(x, y):
     '''
@@ -29,9 +30,9 @@ def l2(x, y):
 
 class GMRA:
     '''
-    This is the GMRA class for
+    GMRA class built on partition function and local decode/encode operations
     '''
-    def __init__(self, data, partition, local, metric=l2, info_fcn=None):
+    def __init__(self, data, partition, local, metric=l2, info_fcn=None, verbose=False):
         '''
         Initialize GMRA
         :param data: data in rows
@@ -39,15 +40,30 @@ class GMRA:
         :param local: returns local encode and decode functions
         :param metric: the base metric for comparison
         :param info_fcn: this returns visualizations coming from the local models
+        :param verbose: boolean toggling verbose mode (displays histogram of cell membership)
         '''
+
+        if verbose:
+            print('Computing metric partition...')
         self.partition = partition(data, metric)
         self.info_fcn = info_fcn
         indices = np.zeros(data.shape[0])
 
+        if verbose:
+            print('Computing cell memberships...')
         for i in range(data.shape[0]):
-            #print(self.partition(data[i,:]))
+            if verbose and i%100==0:
+                print('Processing data index %d of %d' % (i, data.shape[0]))
             indices[i] = int(self.partition(data[i, :])) # What if a cell index never comes up?
         self.max_index = int(np.max(indices))
+
+        if verbose:
+            print('Number of active cells is %d' % self.max_index)
+            print('Plotting histogram of cell membership...')
+            plt.figure('Cell Diagnostic')
+            plt.hist(indices, self.max_index)
+            plt.show()
+            print('Computing local models...')
 
         self.local = {}
         for i in range(self.max_index+1):
@@ -71,17 +87,12 @@ class GMRA:
         else:
             print('Warning: Info function undeclared.')
 
-
-    #TODO: Add new local models for subspace clustering
-
-    #TODO: Make examples for things
-
 if __name__ == '__main__':
     # Simple test using points on the circle
     import numpy.random as rd
-    from partition import uniform_covertree_partition
-    from local import pca_coder
-    from local_info import local_pca_info
+    from GMRAtools.partition import uniform_covertree_partition
+    from GMRAtools.local import pca_coder
+    from GMRAtools.local_info import local_pca_info
 
     N = 10000
     th = 2*np.pi*rd.rand(N)

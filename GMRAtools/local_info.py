@@ -32,18 +32,29 @@ def local_pca_info(local):
             plt.plot(local[i]['info'])
         plt.show()
     else: # If there are many, plot a matrix of values
-        d = len(local[0]['info'])
+
+        # Determine the largest dimension (constrained by number of points in a cell)
+        d = 0
+        for i in range(k):
+            if local[i]['info'].shape[0] > d:
+                d = local[i]['info'].shape[0]
         im = np.zeros((k, d))
 
         for i in range(k):
-            im[i, :] = local[i]['info']
+            im[i, :local[i]['info'].shape[0]] = local[i]['info'] # Neighborhoods may be degenerate
 
         # Set color limits
         a = np.min(im)
         b = np.max(im)
 
+        # Plot the full set of eigenvalues and then a small subset
         plt.figure(0)
-        plt.imshow(im, interpolation='nearest', clim=(a, b))
+        plt.subplot(1, 2, 1)
+        plt.imshow(im, interpolation='nearest', clim=(a, b), aspect='auto')
+        plt.colorbar()
+
+        plt.subplot(1, 2, 2)
+        plt.imshow(im[:100, :50], interpolation='nearest', clim=(a, b))
         plt.colorbar()
         plt.show()
 
