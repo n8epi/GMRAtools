@@ -17,6 +17,7 @@ Please feel free to use and modify this, but keep the above information. Thanks!
 
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 
 def l2(x, y):
     '''
@@ -58,11 +59,16 @@ class GMRA:
         self.max_index = int(np.max(indices))
 
         if verbose:
-            print('Number of active cells is %d' % self.max_index)
+            print('Number of active cells is %d' % (self.max_index+1))
             print('Plotting histogram of cell membership...')
-            plt.figure('Cell Diagnostic')
-            plt.hist(indices, self.max_index)
-            plt.show()
+            title = 'Cell Membership %d' % int(time.time())
+            plt.figure(title)
+            full_index = indices.tolist() + list(range(self.max_index+1))
+            bars = np.bincount(full_index) - 1
+            print('Max count is %d' % int(np.max(bars)))
+            plt.scatter(list(range(self.max_index+1)), bars)
+            plt.savefig(title + '.png')
+            #plt.show()
             print('Computing local models...')
 
         self.local = {}

@@ -18,10 +18,15 @@ import numpy as np
 
 def pca_coder(data, rank=2):
     m = np.mean(data, axis=0)
-    u, s, v = np.linalg.svd(np.apply_along_axis(lambda p: p-m, 1, data))
-    P = v[:rank, :]
-    e = lambda q: (q - m) @ P.T
-    d = lambda c: (c @ P) + m
+    if data.shape[0] > 0:
+        u, s, v = np.linalg.svd(np.apply_along_axis(lambda p: p-m, 1, data))
+        P = v[:rank, :]
+        e = lambda q: (q - m) @ P.T
+        d = lambda c: (c @ P) + m
+    else:
+        e = None
+        d = None
+        s = np.array([])
 
     return {'encode': e, 'decode': d, 'info': s}
 

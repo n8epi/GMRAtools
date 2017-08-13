@@ -14,6 +14,7 @@ Please feel free to use and modify this, but keep the above information. Thanks!
 
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 
 def local_pca_info(local):
     '''
@@ -26,11 +27,14 @@ def local_pca_info(local):
 
     if k <= 25: # If number of local approximations is small, do a simultaneous line plots
         n = int(np.ceil(np.sqrt(k))) # size of the square for plotting
-        plt.figure(0)
+        title = 'Local Spectra %d' % int(time.time())
+        plt.figure(title)
         for i in range(k):
             plt.subplot(n, n, i+1)
             plt.plot(local[i]['info'])
-        plt.show()
+
+        plt.savefig(title + '.png')
+        #plt.show()
     else: # If there are many, plot a matrix of values
 
         # Determine the largest dimension (constrained by number of points in a cell)
@@ -45,10 +49,11 @@ def local_pca_info(local):
 
         # Set color limits
         a = np.min(im)
-        b = np.max(im)
+        b = np.max(np.percentile(im, 0.95, axis=1))
 
         # Plot the full set of eigenvalues and then a small subset
-        plt.figure(0)
+        title = 'Local Spectra %d' % int(time.time())
+        plt.figure(title)
         plt.subplot(1, 2, 1)
         plt.imshow(im, interpolation='nearest', clim=(a, b), aspect='auto')
         plt.colorbar()
@@ -56,7 +61,8 @@ def local_pca_info(local):
         plt.subplot(1, 2, 2)
         plt.imshow(im[:100, :50], interpolation='nearest', clim=(a, b))
         plt.colorbar()
-        plt.show()
+        plt.savefig(title + '.png')
+        #plt.show()
 
 
 
