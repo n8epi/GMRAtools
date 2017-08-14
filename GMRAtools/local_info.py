@@ -49,7 +49,8 @@ def local_pca_info(local):
 
         # Set color limits
         a = np.min(im)
-        b = np.max(np.percentile(im, 0.95, axis=1))
+        #b = np.max(np.percentile(im, 0.95, axis=1))
+        b = np.max(im)
 
         # Plot the full set of eigenvalues and then a small subset
         title = 'Local Spectra %d' % int(time.time())

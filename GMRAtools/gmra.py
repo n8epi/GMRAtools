@@ -46,6 +46,7 @@ class GMRA:
 
         if verbose:
             print('Computing metric partition...')
+
         self.partition = partition(data, metric)
         self.info_fcn = info_fcn
         indices = np.zeros(data.shape[0])
